@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KAIRO Voice Lab</title>
+<style>
+  body {
+    background: #080d16;
+    color: #f4f6fa;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 35px 18px;
+  }
+  h1 { color: #d9ac52; letter-spacing: 4px; }
+  .panel {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 24px;
+    border: 1px solid #d9ac52;
+    border-radius: 18px;
+    background: #111b2b;
+  }
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 125px;
+    background: #080d16;
+    color: white;
+    border: 1px solid #59718e;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 16px;
+  }
+  button {
+    margin-top: 20px;
+    padding: 15px 35px;
+    border: 0;
+    border-radius: 12px;
+    background: #d9ac52;
+    color: #080d16;
+    font-weight: bold;
+    font-size: 17px;
+  }
+  #status { color: #8da6c4; }
+</style>
+</head>
+<body>
+  <h1>KAIRO</h1>
+  <p>LOWK3Y INDUSTRIES • VOICE LAB</p>
+  <div class="panel">
+    <h2>Voice Test</h2>
+    <textarea id="speech">Alright mate! KAIRO here. LowK3y Industries' finest creation. Not bad for a bunch of code, eh?</textarea>
+    <button id="speak">▶ Speak</button>
+    <p id="status">Ready for testing</p>
+  </div>
+<script>
+const button = document.getElementById("speak");
+const status = document.getElementById("status");
+
+button.addEventListener("click", () => {
+  if (!("speechSynthesis" in window)) {
+    status.textContent = "Speech is not supported here.";
+    return;
+  }
+  speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(
+    document.getElementById("speech").value
+  );
+  utterance.lang = "en-GB";
+  utterance.rate = 0.92;
+  utterance.pitch = 0.85;
+  utterance.onstart = () => status.textContent = "KAIRO speaking...";
+  utterance.onend = () => status.textContent = "Ready for testing";
+  utterance.onerror = () => status.textContent = "Speech failed. Try again.";
+  speechSynthesis.speak(utterance);
+});
+</script>
+</body>
+</html>
